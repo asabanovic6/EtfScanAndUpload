@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:etfscanandupload/API/secureStorage.dart';
 import 'package:etfscanandupload/API/api.dart';
-import 'package:etfscanandupload/ViewsConfig/config.dart';
 import 'package:http/http.dart' as http;
 
 import '../loginScreen.dart';
@@ -46,16 +45,12 @@ class ButtonLoginState extends State<ButtonLogin> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                'OK',
+                'Prijava',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 14,
+                  fontSize: 15,
                   fontWeight: FontWeight.w700,
                 ),
-              ),
-              Icon(
-                Icons.arrow_forward,
-                color: Colors.black,
               ),
             ],
           ),
