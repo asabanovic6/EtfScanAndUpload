@@ -7,11 +7,11 @@ import 'package:http/http.dart' as http;
 
 // import 'package:zamgerapp/widgets/widgets.dart';
 
-void main() => runApp(ZamgerApp());
+void main() => runApp(EtfScanAndUpload());
 
 final GlobalKey<NavigatorState> navigator = new GlobalKey<NavigatorState>();
 
-class ZamgerApp extends StatelessWidget {
+class EtfScanAndUpload extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
