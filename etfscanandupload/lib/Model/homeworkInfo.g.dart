@@ -10,9 +10,9 @@ HomeworkInfo _$HomeworkInfoFromJson(Map<String, dynamic> json) {
   return HomeworkInfo()
     ..id = json['id'] as int
     ..name = json['name'] as String
-    ..courseUnit = json['courseUnit'] == null
+    ..courseUnit = json['CourseUnit'] == null
         ? null
-        : CourseUnit.fromJson(json['courseUnit'] as Map<String, dynamic>)
+        : CourseUnit.fromJson(json['CourseUnit'] as Map<String, dynamic>)
     ..nrAssignments = json['nrAssignments'] as int
     ..maxScore = json['maxScore']
     ..deadline = json['deadline'] as String
@@ -28,7 +28,7 @@ Map<String, dynamic> _$HomeworkInfoToJson(HomeworkInfo instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'courseUnit': instance.courseUnit,
+      'CourseUnit': instance.courseUnit,
       'nrAssignments': instance.nrAssignments,
       'maxScore': instance.maxScore,
       'deadline': instance.deadline,

@@ -139,7 +139,8 @@ class _DrawerScreenState extends State<DrawerScreen> {
       Person person = Person.fromJson(response.data);
       setState(() {
         _currentPerson = person;
-        _nameSurname = person.name + " " + person.surname;
+        _nameSurname =
+            person.name + " " + person.surname;
       });
     }
   }

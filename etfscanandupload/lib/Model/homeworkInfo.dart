@@ -9,6 +9,7 @@ class HomeworkInfo {
 
   int id;
   String name;
+   @JsonKey(name: 'CourseUnit')
   CourseUnit courseUnit;
   int nrAssignments;
   dynamic maxScore;

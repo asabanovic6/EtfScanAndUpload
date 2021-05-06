@@ -27,7 +27,10 @@ class Api {
     final $url = '/homework/latest/$student&resolve[]=CourseUnit';
     return client.get($url);
   }
-
+static Future<Response<dynamic>> getCourse(int id) {
+    final $url = '/course/$id';
+    return client.get($url);
+  }
   static Future<Response<dynamic>> getFileByHomeworkId(
       int homeworkId, int asgn, int student) {
     final $url = '/homework/$homeworkId/$asgn/student/$student/file';
