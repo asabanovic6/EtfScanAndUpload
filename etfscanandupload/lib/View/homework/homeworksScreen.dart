@@ -151,6 +151,7 @@ class _HomeworksState extends State<HomeworksPage> {
                                 builder: (context) => HomeworkInfoPage(
                                     _homeworks.results[index].id,
                                     _homeworks.results[index].courseUnit.id,
+                                    _homeworks.results[index].nrAssignments,
                                     _currentPerson)));
                           },
                         ),
