@@ -34,12 +34,6 @@ class _HomeworksState extends State<HomeworksPage> {
       body: SafeArea(
         child: Stack(
           children: [
-            CustomPaint(
-              painter: CurvePainter(),
-              child: Container(
-                height: 300.0,
-              ),
-            ),
             Column(
               children: [
                 Container(
@@ -169,26 +163,4 @@ class _HomeworksState extends State<HomeworksPage> {
   }
 }
 
-class CurvePainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    var paint = Paint();
-    paint.color = Colors.blue;
-    paint.style = PaintingStyle.fill;
 
-    var path = Path();
-
-    path.moveTo(0, size.height * 0.55);
-    path.quadraticBezierTo(
-        size.width / 2, 1.5 * size.height, size.width, size.height * 0.5);
-    path.lineTo(size.width, 0);
-    path.lineTo(0, 0);
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
-  }
-}

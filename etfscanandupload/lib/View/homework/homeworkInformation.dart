@@ -44,6 +44,7 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
   void initState() {
     super.initState();
     _fetchHomeworkInfo();
+    _fetchAsignments();
   }
 
   Future<void> _fetchHomeworkInfo() async {
@@ -52,7 +53,6 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
     if (response.statusCode == 200) {
       setState(() {
         _homework = Homework.fromJson(response.data);
-        _fetchAsignments();
       });
     }
   }
@@ -77,136 +77,170 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
   Widget build(BuildContext context) {
     return _homework != null
         ? Scaffold(
-            extendBodyBehindAppBar: true,
-            appBar: AppBar(
-              backgroundColor: Color.fromRGBO(255, 255, 255, 0),
-              elevation: 0,
-              leading: TextButton(
-                child: Icon(Icons.arrow_back_ios, color: Colors.white),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-            body: Column(
-              children: <Widget>[
-                Expanded(
-                  flex: 9,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topRight,
-                          end: Alignment.bottomLeft,
-                          colors: [Colors.white, Colors.blue]),
-                    ),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    SizedBox(
-                                      height: 80,
-                                    ),
-                                    Text(
-                                      _homework.homework.courseUnit.name,
-                                      textAlign: TextAlign.center,
+      body: SafeArea(
+              child: Stack(
+                children: [
+                  Column(
+                    children: [
+                      Container(
+                        height: 100,
+                        width: MediaQuery.of(context).size.width,
+                        child: PreferredSize(
+                          preferredSize: Size.fromHeight(100),
+                          child: AppBar(
+                            backgroundColor: Colors.blue,
+                            toolbarHeight: 100,
+                            title: RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(
+                                  text: _homework.homework.name,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: '\n' +
+                                          _homework.homework.courseUnit.abbrev,
                                       style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 35,
+                                        fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 24,
-                                        vertical: 5,
-                                      ),
-                                      child: Text(
-                                        'Naziv zadaće: ' +
-                                            _homework.homework.name,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17,
-                                        ),
+                                    TextSpan(
+                                      text: '\nRok: ' +
+                                          _homework.homework.deadline,
+                                      style: TextStyle(
+                                        fontSize: 13,
                                       ),
                                     ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 24,
-                                        vertical: 5,
-                                      ),
-                                      child: Text(
-                                        'Rok: ' + _homework.homework.deadline,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17,
-                                        ),
+                                     TextSpan(
+                                      text: '\nMogući bodovi: ' +
+                                          _homework.homework.maxScore
+                                              .toString(),
+                                      style: TextStyle(
+                                        fontSize: 13,
                                       ),
                                     ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 24,
-                                        vertical: 5,
-                                      ),
-                                      child: Text(
-                                        'Ostvareno bodova: ' +
-                                            _homework.score.toString() +
-                                            ' / ' +
-                                            _homework.homework.maxScore
-                                                .toString(),
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    _buildFeaturesSection(),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                                  ]),
+                            ),
+                            centerTitle: true,
+                            leading: TextButton(
+                              child: Icon(Icons.arrow_back_ios,
+                                  color: Colors.white),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
                       ),
                     ),
                   ),
-                ),
-              ],
+                      ),
+                      Expanded(child: _buildFeaturesSection()),
+                    ],
+                  ),
+                ],
+              ),
             ),
           )
         : Center(child: CircularProgressIndicator());
   }
 
   Widget _buildFeaturesSection() {
-    return Wrap(
-      children: _asignments
-          .map((item) => Text(item.id.toString()))
-          .toList()
-          .cast<Widget>(),
-    );
+    return ListView.builder(
+        padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
+        itemCount: _asignments.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Card(
+            elevation: 8.0,
+            margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    colors: [Colors.white, Colors.blue]),
+              ),
+              child: ListTile(
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                leading: Container(
+                  padding: EdgeInsets.only(right: 12.0),
+                  decoration: new BoxDecoration(
+                      border: new Border(
+                          right: new BorderSide(
+                              width: 1.0, color: Colors.white24))),
+                  child: _asignments[index].filename != null
+                      ? _asignments[index].score == 0
+                          ? TextButton(
+                              child: Icon(
+                                Icons.assignment_turned_in_outlined,
+                                color: Colors.white,
+                                size: 30,
+                              ),
+                                onPressed: () {
+                                //Ovdje ide dio koda za spremanje file-a
+                              })
+                          : TextButton(
+                              child: Icon(
+                                Icons.assignment_turned_in_rounded,
+                                color: Colors.white,
+                                size: 30,
+                              ),
+                              onPressed: () {
+                                //Ovdje ide dio koda za spremanje file-a
+                              })
+                      : Icon(
+                          Icons.lightbulb_outline_rounded,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                ),
+                title: Text(
+                  'Zadatak ' + (index + 1).toString(),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 23),
+                ),
+                subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Wrap(
+                        direction: Axis.vertical,
+                        children: <Widget>[
+                          Text(
+                            "Bodovi: " + _asignments[index].score.toString(),
+                            style: TextStyle(color: Colors.white),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          _asignments[index].filename != null
+                              ? Text(
+                                  "Rješenje: " +
+                                      _asignments[index].filename +
+                                      '\nVeličina: ' +
+                                      _asignments[index].filesize +
+                                      '\nTip datoteke: ' +
+                                      _asignments[index].filetype +
+                                      '\nVrijeme: ' +
+                                      _asignments[index].time,
+                                  style: TextStyle(color: Colors.white))
+                              : Text("Rješenje nije poslano",
+                                  style: TextStyle(color: Colors.white)),
+                          
+                        ],
+                        
+                      )
+                    ]),
+                trailing: TextButton(
+                  child:
+                      Icon(Icons.upload_file, color: Colors.white, size: 40.0),
+                  onPressed: () {
+                    //Ovdje cu otvoriti scanner
+                  },
+                ),
+              ),
+            ),
+                  );
+        });
   }
 }
+
