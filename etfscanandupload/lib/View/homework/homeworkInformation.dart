@@ -1,9 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:etfscanandupload/API/api.dart';
 import 'package:etfscanandupload/Model/person.dart';
 import 'package:etfscanandupload/Model/homework.dart';
 import 'package:etfscanandupload/Model/homeworks.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'dart:io';
+
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class HomeworkInfoPage extends StatefulWidget {
   int _courseId;
@@ -30,7 +37,6 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
   int _nrAssignments;
   Person _currentPerson;
   List<Homework> _asignments = [];
-
   Homework _homework;
   _HomeworkInfoPageState(
       int homeworkId, int courseId, int nrAssignments, Person currentPerson) {
@@ -77,7 +83,7 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
   Widget build(BuildContext context) {
     return _homework != null
         ? Scaffold(
-      body: SafeArea(
+            body: SafeArea(
               child: Stack(
                 children: [
                   Column(
@@ -113,7 +119,7 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
                                         fontSize: 13,
                                       ),
                                     ),
-                                     TextSpan(
+                                    TextSpan(
                                       text: '\nMogući bodovi: ' +
                                           _homework.homework.maxScore
                                               .toString(),
@@ -130,9 +136,9 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
                               onPressed: () {
                                 Navigator.pop(context);
                               },
-                      ),
-                    ),
-                  ),
+                            ),
+                          ),
+                        ),
                       ),
                       Expanded(child: _buildFeaturesSection()),
                     ],
@@ -176,8 +182,11 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
                                 color: Colors.white,
                                 size: 30,
                               ),
-                                onPressed: () {
-                                //Ovdje ide dio koda za spremanje file-a
+                              onPressed: () {
+                                _savefile(
+                                    _asignments[index].assignNo,
+                                    _asignments[index].student.id,
+                                    _asignments[index].filename);
                               })
                           : TextButton(
                               child: Icon(
@@ -225,9 +234,7 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
                                   style: TextStyle(color: Colors.white))
                               : Text("Rješenje nije poslano",
                                   style: TextStyle(color: Colors.white)),
-                          
                         ],
-                        
                       )
                     ]),
                 trailing: TextButton(
@@ -239,8 +246,62 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
                 ),
               ),
             ),
-                  );
+          );
         });
   }
-}
 
+  Future<void> _savefile(int asgn, int studentId, String fileName) async {
+    Directory directory;
+    try {
+      if (Platform.isAndroid) {
+        if (await _requestPermission(Permission.storage)) {
+          directory = await getExternalStorageDirectory();
+          String newPath = "";
+          print(directory);
+          List<String> paths = directory.path.split("/");
+          for (int x = 1; x < paths.length; x++) {
+            String folder = paths[x];
+            if (folder != "Android") {
+              newPath += "/" + folder;
+            } else {
+              break;
+            }
+          }
+          newPath = newPath + "/ETFApp";
+          directory = Directory(newPath);
+        }
+
+        if (!await directory.exists()) {
+          await directory.create(recursive: true);
+        }
+        if (await directory.exists()) {
+          File saveFile = File(directory.path + "/$fileName");
+          var response =
+              await Api.getFileByHomeworkId(_homeworkId, asgn, studentId);
+          if (response.statusCode == 200) {
+            saveFile.writeAsBytes(response.data);
+          }
+
+          if (Platform.isIOS) {
+            await ImageGallerySaver.saveFile(saveFile.path,
+                isReturnPathOfIOS: true);
+          }
+        }
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<bool> _requestPermission(Permission permission) async {
+    if (await permission.isGranted) {
+      return true;
+    } else {
+      var result = await permission.request();
+      if (result == PermissionStatus.granted) {
+        return true;
+      }
+    }
+    return false;
+  }
+}

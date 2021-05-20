@@ -21,6 +21,9 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  path_provider: ^1.6.10
+  image_gallery_saver: '^1.6.9'
+  permission_handler: ^5.0.1+1
   flutter:
     sdk: flutter
 

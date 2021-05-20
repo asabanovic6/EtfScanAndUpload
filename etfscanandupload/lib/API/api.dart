@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:etfscanandupload/API/secureStorage.dart';
 import 'package:etfscanandupload/main.dart';
 
+int file = 0;
+
 class Api {
   static Dio client;
 
@@ -27,16 +29,19 @@ class Api {
     final $url = '/homework/latest/$student&resolve[]=CourseUnit';
     return client.get($url);
   }
-static Future<Response<dynamic>> getCourse(int id) {
+
+  static Future<Response<dynamic>> getCourse(int id) {
     final $url = '/course/$id';
     return client.get($url);
   }
+
   static Future<Response<dynamic>> getFileByHomeworkId(
       int homeworkId, int asgn, int student) {
+    file = 1;
     final $url = '/homework/$homeworkId/$asgn/student/$student/file';
     return client.get($url);
   }
-
+   
   static Future<Response<dynamic>> getHomework(
       int homeworkId, int asgn, int courseId, int student) {
     final $url =
@@ -61,6 +66,10 @@ class AuthInterceptor extends Interceptor {
     String accessToken = await Credentials.getAccessToken();
     Api.client.unlock();
     options.headers[AUTH] = BEARER + accessToken;
+    if (file == 1) {
+      options.responseType = ResponseType.bytes;
+      file = 0;
+    } 
     return options;
   }
 
