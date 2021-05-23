@@ -6,6 +6,7 @@ import 'package:etfscanandupload/API/api.dart';
 import 'package:etfscanandupload/Model/person.dart';
 import 'package:etfscanandupload/Model/homework.dart';
 import 'package:etfscanandupload/Model/homeworks.dart';
+import 'package:etfscanandupload/View/homework/viewHomework.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'dart:io';
 
@@ -167,9 +168,9 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
               ),
               child: ListTile(
                 contentPadding:
-                    EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                    EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
                 leading: Container(
-                  padding: EdgeInsets.only(right: 12.0),
+                  padding: EdgeInsets.only(right: 5.0),
                   decoration: new BoxDecoration(
                       border: new Border(
                           right: new BorderSide(
@@ -195,8 +196,12 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
                                 size: 30,
                               ),
                               onPressed: () {
-                                //Ovdje ide dio koda za spremanje file-a
+                                _savefile(
+                                    _asignments[index].assignNo,
+                                    _asignments[index].student.id,
+                                    _asignments[index].filename);
                               })
+                             
                       : Icon(
                           Icons.lightbulb_outline_rounded,
                           color: Colors.white,
@@ -239,7 +244,7 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
                     ]),
                 trailing: TextButton(
                   child:
-                      Icon(Icons.upload_file, color: Colors.white, size: 40.0),
+                      Icon(Icons.upload_file, color: Colors.white, size: 30.0),
                   onPressed: () {
                     //Ovdje cu otvoriti scanner
                   },
@@ -253,7 +258,7 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
   Future<void> _savefile(int asgn, int studentId, String fileName) async {
     Directory directory;
     try {
-      if (Platform.isAndroid) {
+     
         if (await _requestPermission(Permission.storage)) {
           directory = await getExternalStorageDirectory();
           String newPath = "";
@@ -280,14 +285,14 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
               await Api.getFileByHomeworkId(_homeworkId, asgn, studentId);
           if (response.statusCode == 200) {
             saveFile.writeAsBytes(response.data);
+           Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => ViewerInfoPage(
+                  saveFile, directory.path + "/$fileName", fileName)));
           }
 
-          if (Platform.isIOS) {
-            await ImageGallerySaver.saveFile(saveFile.path,
-                isReturnPathOfIOS: true);
-          }
+
         }
-      }
+      
     } catch (e) {
       print(e);
     }
@@ -304,4 +309,6 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
     }
     return false;
   }
+
+ 
 }
