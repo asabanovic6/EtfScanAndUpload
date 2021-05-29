@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:etfscanandupload/Model/homework.dart';
 import 'package:etfscanandupload/View/pdfCreator/creator.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -8,34 +9,34 @@ import 'package:image_picker/image_picker.dart';
 class ScannerPage extends StatefulWidget {
   int _studentId;
   int _asgn;
-  int _homeworkId;
+Homework _homework;
   List<File> _images;
 
-  ScannerPage(int studentId, int asgn, int homeworkId, List<File> images) {
+  ScannerPage(int studentId, int asgn, Homework homework, List<File> images) {
     _studentId = studentId;
     _asgn = asgn;
-    _homeworkId = homeworkId;
+    _homework = homework;
     _images = images;
   }
 
   @override
   _ScannerState createState() =>
-      _ScannerState(_studentId, _asgn, _homeworkId, _images);
+      _ScannerState(_studentId, _asgn, _homework, _images);
 }
 
 class _ScannerState extends State<ScannerPage> {
   int _studentId;
   int _asgn;
-  int _homeworkId;
+  Homework _homework;
   List<File> _images;
   File scannedDocument;
   File _selectedFile;
   bool _inProcess = false;
 
-  _ScannerState(int studentId, int asgn, int homeworkId, List<File> images) {
+  _ScannerState(int studentId, int asgn, Homework homework, List<File> images) {
     _studentId = studentId;
     _asgn = asgn;
-    _homeworkId = homeworkId;
+    _homework = homework;
     _images = images;
   }
 
@@ -69,7 +70,7 @@ class _ScannerState extends State<ScannerPage> {
       });
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) =>
-              CreatorPage(_studentId, _asgn, _homeworkId, _images)));
+              CreatorPage(_studentId, _asgn, _homework, _images)));
     } else {
       this.setState(() {
         _inProcess = false;

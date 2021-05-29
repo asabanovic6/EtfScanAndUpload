@@ -4,37 +4,38 @@ import 'package:analyzer/dart/ast/ast.dart';
 import 'package:etfscanandupload/View/scanner/scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:etfscanandupload/Model/homework.dart';
 
 class CreatorPage extends StatefulWidget {
   int _studentId;
   int _asgn;
-  int _homeworkId;
+  Homework _homework;
   List<File> _images;
 
-  CreatorPage(int studentId, int asgn, int homeworkId, List<File> images) {
+  CreatorPage(int studentId, int asgn, Homework homework, List<File> images) {
     _studentId = studentId;
     _asgn = asgn;
-    _homeworkId = homeworkId;
+    _homework = homework;
     _images = images;
   }
 
   @override
   _CreatorState createState() =>
-      _CreatorState(_studentId, _asgn, _homeworkId, _images);
+      _CreatorState(_studentId, _asgn, _homework, _images);
 }
 
 class _CreatorState extends State<CreatorPage> {
   int _studentId;
   int _asgn;
-  int _homeworkId;
+  Homework _homework;
   List<File> _images;
   File scannedDocument;
   List<Widget> _widgets = [];
 
-  _CreatorState(int studentId, int asgn, int homeworkId, List<File> images) {
+  _CreatorState(int studentId, int asgn, Homework homework, List<File> images) {
     _studentId = studentId;
     _asgn = asgn;
-    _homeworkId = homeworkId;
+    _homework = homework;
     _images = images;
   }
   void _removeImage(index) {
@@ -68,7 +69,7 @@ class _CreatorState extends State<CreatorPage> {
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) =>
-                    ScannerPage(_studentId, _asgn, _homeworkId, _images)));
+                    ScannerPage(_studentId, _asgn, _homework, _images)));
           },
         ),
       ),
@@ -122,7 +123,7 @@ class _CreatorState extends State<CreatorPage> {
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) =>
-                  ScannerPage(_studentId, _asgn, _homeworkId, _images)));
+                  ScannerPage(_studentId, _asgn, _homework, _images)));
         },
       ),
     );

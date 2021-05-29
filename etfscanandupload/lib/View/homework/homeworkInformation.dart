@@ -250,7 +250,7 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
                     //Ovdje cu otvoriti scanner
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => ScannerPage(
-                            _currentPerson.id, index, _homeworkId, _images)));
+                            _currentPerson.id, index, _homework, _images)));
                   },
                 ),
               ),
