@@ -30,7 +30,6 @@ class _CreatorState extends State<CreatorPage> {
   Homework _homework;
   List<File> _images;
   File scannedDocument;
-  List<Widget> _widgets = [];
 
   _CreatorState(int studentId, int asgn, Homework homework, List<File> images) {
     _studentId = studentId;
@@ -48,14 +47,16 @@ class _CreatorState extends State<CreatorPage> {
     if (imageFile == null) {
       return Text("Slika nije spasena");
     } else {
+      /*
       Widget widget = ColorFiltered(
         child: Image.file(
           imageFile,
         ),
         colorFilter: ColorFilter.mode(Colors.grey.shade100, BlendMode.color),
       );
-      _widgets.add(widget);
-      return widget;
+    
+      return widget; */
+      return Image.file(imageFile);
     }
   }
 

@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:etfscanandupload/Model/homework.dart';
-import 'package:etfscanandupload/View/pdfCreator/creator.dart';
+import 'package:etfscanandupload/View/scanner/imageEditor.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -63,14 +63,13 @@ class _ScannerState extends State<ScannerPage> {
             statusBarColor: Colors.blue,
             backgroundColor: Colors.white,
           ));
-      _images.add(cropped);
       this.setState(() {
         _selectedFile = cropped;
         _inProcess = false;
       });
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) =>
-              CreatorPage(_studentId, _asgn, _homework, _images)));
+              ImageEditorPage(_studentId, _asgn, _homework, _images, cropped)));
     } else {
       this.setState(() {
         _inProcess = false;
