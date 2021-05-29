@@ -1,12 +1,13 @@
 import 'dart:convert';
 
+import 'package:etfscanandupload/View/scanner/scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:etfscanandupload/API/api.dart';
 import 'package:etfscanandupload/Model/person.dart';
 import 'package:etfscanandupload/Model/homework.dart';
 import 'package:etfscanandupload/Model/homeworks.dart';
-import 'package:etfscanandupload/View/homework/viewHomework.dart';
+import 'package:etfscanandupload/View/homework/homeworkPreview.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'dart:io';
 
@@ -39,6 +40,7 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
   Person _currentPerson;
   List<Homework> _asignments = [];
   Homework _homework;
+  List<File> _images = [];
   _HomeworkInfoPageState(
       int homeworkId, int courseId, int nrAssignments, Person currentPerson) {
     _courseId = courseId;
@@ -201,7 +203,6 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
                                     _asignments[index].student.id,
                                     _asignments[index].filename);
                               })
-                             
                       : Icon(
                           Icons.lightbulb_outline_rounded,
                           color: Colors.white,
@@ -247,6 +248,9 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
                       Icon(Icons.upload_file, color: Colors.white, size: 30.0),
                   onPressed: () {
                     //Ovdje cu otvoriti scanner
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ScannerPage(
+                            _currentPerson.id, index, _homeworkId, _images)));
                   },
                 ),
               ),
@@ -258,41 +262,37 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
   Future<void> _savefile(int asgn, int studentId, String fileName) async {
     Directory directory;
     try {
-     
-        if (await _requestPermission(Permission.storage)) {
-          directory = await getExternalStorageDirectory();
-          String newPath = "";
-          print(directory);
-          List<String> paths = directory.path.split("/");
-          for (int x = 1; x < paths.length; x++) {
-            String folder = paths[x];
-            if (folder != "Android") {
-              newPath += "/" + folder;
-            } else {
-              break;
-            }
+      if (await _requestPermission(Permission.storage)) {
+        directory = await getExternalStorageDirectory();
+        String newPath = "";
+        print(directory);
+        List<String> paths = directory.path.split("/");
+        for (int x = 1; x < paths.length; x++) {
+          String folder = paths[x];
+          if (folder != "Android") {
+            newPath += "/" + folder;
+          } else {
+            break;
           }
-          newPath = newPath + "/ETFApp";
-          directory = Directory(newPath);
         }
+        newPath = newPath + "/ETFApp";
+        directory = Directory(newPath);
+      }
 
-        if (!await directory.exists()) {
-          await directory.create(recursive: true);
-        }
-        if (await directory.exists()) {
-          File saveFile = File(directory.path + "/$fileName");
-          var response =
-              await Api.getFileByHomeworkId(_homeworkId, asgn, studentId);
-          if (response.statusCode == 200) {
-            saveFile.writeAsBytes(response.data);
-           Navigator.of(context).push(MaterialPageRoute(
+      if (!await directory.exists()) {
+        await directory.create(recursive: true);
+      }
+      if (await directory.exists()) {
+        File saveFile = File(directory.path + "/$fileName");
+        var response =
+            await Api.getFileByHomeworkId(_homeworkId, asgn, studentId);
+        if (response.statusCode == 200) {
+          saveFile.writeAsBytes(response.data);
+          Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => ViewerInfoPage(
                   saveFile, directory.path + "/$fileName", fileName)));
-          }
-
-
         }
-      
+      }
     } catch (e) {
       print(e);
     }
@@ -309,6 +309,4 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
     }
     return false;
   }
-
- 
 }

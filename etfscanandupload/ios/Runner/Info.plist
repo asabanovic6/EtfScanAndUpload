@@ -42,5 +42,11 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<string>$(PRODUCT_NAME)photos description.</string>
+	<key>io.flutter.embedded_views_preview</key>
+<true/>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>This app needs to access photo library</string>
+<key>NSCameraUsageDescription</key>
+<string>This app needs Camera Usage</string>
 </dict>
 </plist>
