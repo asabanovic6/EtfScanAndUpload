@@ -1,32 +1,46 @@
+import 'package:etfscanandupload/API/secureStorage.dart';
 import 'package:flutter/material.dart';
 import 'package:etfscanandupload/API/api.dart';
 import 'package:etfscanandupload/Model/homeworksInfo.dart';
 import 'package:etfscanandupload/Model/person.dart';
 import 'package:etfscanandupload/View/homework/homeworkInformation.dart';
+import 'dart:core';
 
 class HomeworksPage extends StatefulWidget {
-  Person _currentPerson;
-  HomeworksPage(Person currentPerson) {
-    _currentPerson = currentPerson;
-  }
-
   @override
-  _HomeworksState createState() => _HomeworksState(_currentPerson);
+  _HomeworksState createState() => _HomeworksState();
 }
 
 class _HomeworksState extends State<HomeworksPage> {
   HomeworksInfo _homeworks;
   Person _currentPerson;
-
-  _HomeworksState(Object currentPerson) {
-    _currentPerson = currentPerson;
-  }
+  String _nameSurname = "";
+  String _email = "";
+  String _lastAcces = "";
 
   @override
   void initState() {
     super.initState();
-    _fetchActiveHomeworks();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _fetchUserNameSurname();
+    });
   }
+
+  _fetchUserNameSurname() async {
+    var response = await Api.currentPerson();
+    if (response.statusCode == 200) {
+      Person person = Person.fromJson(response.data);
+      setState(() {
+        _currentPerson = person;
+        _nameSurname = person.name + " " + person.surname;
+        _email = person.email;
+        _lastAcces = person.lastAccess;
+        _fetchActiveHomeworks();
+      });
+    }
+  }
+
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -42,14 +56,40 @@ class _HomeworksState extends State<HomeworksPage> {
                   child: PreferredSize(
                     preferredSize: Size.fromHeight(100),
                     child: AppBar(
-                      backgroundColor: Colors.blue,
-                      title: Text("Aktivne zadaće"),
+                      backgroundColor: Colors.blue.shade800,
+                      toolbarHeight: 100,
+                      title: RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                            text: _nameSurname,
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: '\n' + _email,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                              TextSpan(
+                                text: '\n' + '\nAktivni događaji: ',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ]),
+                      ),
                       centerTitle: true,
                       elevation: 0,
                       leading: TextButton(
-                        child: Icon(Icons.arrow_back_ios, color: Colors.white),
-                        onPressed: () {
-                          Navigator.pop(context);
+                        child:
+                            Icon(Icons.logout, color: Colors.white, size: 40),
+                        onPressed: () async {
+                          await Credentials.deleteTokens();
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              '/login', (Route<dynamic> route) => false);
                         },
                       ),
                     ),
@@ -74,7 +114,7 @@ class _HomeworksState extends State<HomeworksPage> {
   }
 
   Widget _buildActiveHomeworks() {
-    return _homeworks != null
+    return (_homeworks != null)
         ? RefreshIndicator(
             child: ListView.builder(
                 padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
@@ -89,7 +129,10 @@ class _HomeworksState extends State<HomeworksPage> {
                         gradient: LinearGradient(
                             begin: Alignment.topRight,
                             end: Alignment.bottomLeft,
-                            colors: [Colors.white, Colors.blue]),
+                            colors: [
+                              Colors.blue.shade300,
+                              Colors.blue.shade900
+                            ]),
                       ),
                       child: ListTile(
                         contentPadding: EdgeInsets.symmetric(
@@ -100,17 +143,11 @@ class _HomeworksState extends State<HomeworksPage> {
                               border: new Border(
                                   right: new BorderSide(
                                       width: 1.0, color: Colors.white24))),
-                          child: _homeworks.results[index].active == true
-                              ? Icon(
-                                  Icons.timer,
-                                  color: Colors.white,
-                                  size: 30,
-                                )
-                              : Icon(
-                                  Icons.hourglass_bottom_rounded,
-                                  color: Colors.red,
-                                  size: 30,
-                                ),
+                          child: Icon(
+                            Icons.hourglass_bottom_rounded,
+                            color: Colors.white,
+                            size: 30,
+                          ),
                         ),
                         title: Text(
                           _homeworks.results[index].courseUnit.abbrev,
@@ -139,7 +176,7 @@ class _HomeworksState extends State<HomeworksPage> {
                             ]),
                         trailing: TextButton(
                           child: Icon(Icons.arrow_forward_ios,
-                              color: Colors.white, size: 30.0),
+                              color: Colors.orange, size: 30.0),
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => HomeworkInfoPage(
@@ -159,8 +196,15 @@ class _HomeworksState extends State<HomeworksPage> {
               });
             },
           )
-        : Center(child: CircularProgressIndicator());
+        : Container(
+            child: Align(
+              alignment: Alignment.center,
+              child: Text(
+                'Nema aktivnih događaja',
+                style: TextStyle(color: Colors.white),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          );
   }
 }
-
-

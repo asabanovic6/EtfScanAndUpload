@@ -26,7 +26,7 @@ class ButtonLoginState extends State<ButtonLogin> {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.white,
+              color: Colors.white30,
               blurRadius: 10.0,
               spreadRadius: 2.0,
               offset: Offset(
@@ -35,7 +35,7 @@ class ButtonLoginState extends State<ButtonLogin> {
               ),
             ),
           ],
-          color: Colors.white,
+          color: Colors.white70,
           borderRadius: BorderRadius.circular(30),
         ),
         child: TextButton(
@@ -47,7 +47,7 @@ class ButtonLoginState extends State<ButtonLogin> {
               Text(
                 'Prijava',
                 style: TextStyle(
-                  color: Colors.black,
+                  color:  Color.fromARGB(255, 0, 76, 153),
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
                 ),

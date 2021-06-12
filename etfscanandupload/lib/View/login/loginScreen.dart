@@ -1,5 +1,5 @@
+import 'package:etfscanandupload/View/homework/homeworksScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:etfscanandupload/View/home/homeScreen.dart';
 import 'package:etfscanandupload/View/home/menu.dart';
 import 'package:etfscanandupload/View/login/widgets/button.dart';
 import 'package:etfscanandupload/View/login/widgets/email.dart';
@@ -7,7 +7,6 @@ import 'package:etfscanandupload/View/login/widgets/password.dart';
 import 'package:etfscanandupload/View/login/widgets/welcome.dart';
 import 'package:etfscanandupload/View/login/widgets/title.dart' as title;
 import 'package:etfscanandupload/API/secureStorage.dart';
-import 'package:etfscanandupload/Model/person.dart';
 import 'package:etfscanandupload/API/api.dart';
 import 'package:http/http.dart' as http;
 
@@ -22,10 +21,10 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
+            gradient: LinearGradient(
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
-              colors: [Colors.white, Color.fromARGB(255, 0, 102, 204)]),
+              colors: [Colors.blueAccent.shade100, Colors.white30]), 
         ),
         child: ListView(
           children: <Widget>[
@@ -53,7 +52,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        children: [DrawerScreen(), HomeScreen()],
+        children: [HomeworksPage()],
       ),
     );
   }

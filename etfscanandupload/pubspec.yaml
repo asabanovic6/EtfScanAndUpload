@@ -21,7 +21,6 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  opencv: ^1.0.4
   path_provider: ^1.6.10
   path: ^1.6.4
   image_gallery_saver: '^1.6.9'
@@ -47,6 +46,8 @@ dependencies:
   animated_splash_screen: ^1.1.0
   requests: ^3.3.0
   json_annotation: ^3.1.1
+  pdf: ^2.1.0
+  filesize: ^2.0.1
   
 dependency_overrides:
   analyzer: ^0.41.1

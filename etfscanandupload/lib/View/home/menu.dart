@@ -12,12 +12,12 @@ class DrawerScreen extends StatefulWidget {
 }
 
 List<Map> drawerItems = [
-  {'icon': Icons.book, 'title': 'Zadaće'},
-  {'icon': Icons.camera, 'title': 'Scanner'}
+  {'icon': Icons.book, 'title': 'Aktivni događaji'}
 ];
 
 class _DrawerScreenState extends State<DrawerScreen> {
-  String _nameSurname = "Etf Scan & Upload";
+  String _nameSurname = "";
+  String _email = "";
   Person _currentPerson;
   @override
   void initState() {
@@ -30,11 +30,17 @@ class _DrawerScreenState extends State<DrawerScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      
       decoration: BoxDecoration(
         gradient: LinearGradient(
+          
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
-            colors: [Colors.white, Colors.blue]),
+            colors: [
+              Colors.white30,
+              Colors.blue.shade50,
+              Colors.blueAccent.shade100
+            ]),
       ),
       height: MediaQuery.of(context).size.height,
       padding: EdgeInsets.only(top: 50, bottom: 70, left: 10),
@@ -42,15 +48,18 @@ class _DrawerScreenState extends State<DrawerScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+           
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 CircleAvatar(
-                  backgroundImage: Image.asset('image/user_icon.png').image,
+                  backgroundImage: Image.asset('image/user.png').image,
                   backgroundColor: Colors.transparent,
-                  radius: 20,
+                  radius: 30,
                 ),
                 SizedBox(
-                  width: 10,
+                  width: 20,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,24 +67,36 @@ class _DrawerScreenState extends State<DrawerScreen> {
                     Text(
                       _nameSurname,
                       style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.blue.shade900,
                           fontWeight: FontWeight.bold,
                           fontSize: 20),
                     ),
+                    Text(
+                      _email,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.blue.shade900,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 10),
+                    )
                   ],
                 )
               ],
             ),
-            SizedBox(height: 80),
+            SizedBox(height: 130),
             Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: drawerItems
                   .map((element) => Padding(
-                        padding: const EdgeInsets.all(4.0),
+                        padding: const EdgeInsets.all(1.0),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Icon(
                               element['icon'],
-                              color: Colors.white,
+                              color: Colors.blue.shade900,
                               size: 30,
                             ),
                             SizedBox(
@@ -84,17 +105,17 @@ class _DrawerScreenState extends State<DrawerScreen> {
                             TextButton(
                               child: Text(element['title'],
                                   style: TextStyle(
-                                      color: Colors.white,
+                                      color: Colors.blue.shade900,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20)),
                               onPressed: () => {
-                                if (element['title'] == 'Zadaće')
+                                if (element['title'] == 'Aktivni događaji')
                                   {
-                                    Navigator.of(context).push(
+                              /*      Navigator.of(context).push(
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                HomeworksPage(_currentPerson)))
-                                  }
+                                                HomeworksPage(_currentPerson))) */
+                                  },
                               },
                             ),
                           ],
@@ -103,13 +124,15 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   .toList(),
             ),
             SizedBox(
-              height: 50,
+              height: 10,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Icon(
                   Icons.logout,
-                  color: Colors.white,
+                  color: Colors.blue.shade900,
                 ),
                 TextButton(
                   onPressed: () async {
@@ -120,13 +143,17 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   child: Text(
                     'Odjavi se',
                     style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.blue.shade900,
                         fontWeight: FontWeight.bold,
                         fontSize: 20),
                   ),
-                )
+                ),
+               
               ],
-            )
+              
+            ),
+                            
+                                  
           ],
         ),
       ),
@@ -139,8 +166,8 @@ class _DrawerScreenState extends State<DrawerScreen> {
       Person person = Person.fromJson(response.data);
       setState(() {
         _currentPerson = person;
-        _nameSurname =
-            person.name + " " + person.surname;
+        _nameSurname = person.name + " " + person.surname;
+        _email = person.email;
       });
     }
   }

@@ -17,14 +17,16 @@ class _PasswordInputState extends State<PasswordInput> {
         child: TextField(
           controller: ButtonLoginState.passwordController,
           style: TextStyle(
-            color: Colors.white,
+            color: Color.fromARGB(255, 0, 76, 153),
           ),
           obscureText: true,
           decoration: InputDecoration(
             border: InputBorder.none,
             labelText: 'Lozinka :',
             labelStyle:
-                TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                TextStyle(
+                color: Color.fromARGB(255, 0, 76, 153),
+                fontWeight: FontWeight.bold),
           ),
         ),
       ),

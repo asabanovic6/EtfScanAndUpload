@@ -97,7 +97,7 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
                         child: PreferredSize(
                           preferredSize: Size.fromHeight(100),
                           child: AppBar(
-                            backgroundColor: Colors.blue,
+                            backgroundColor: Colors.blue.shade800,
                             toolbarHeight: 100,
                             title: RichText(
                               textAlign: TextAlign.center,
@@ -135,7 +135,7 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
                             centerTitle: true,
                             leading: TextButton(
                               child: Icon(Icons.arrow_back_ios,
-                                  color: Colors.white),
+                                  size: 30, color: Colors.white),
                               onPressed: () {
                                 Navigator.pop(context);
                               },
@@ -166,7 +166,7 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
                 gradient: LinearGradient(
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
-                    colors: [Colors.white, Colors.blue]),
+                    colors: [Colors.blue.shade300, Colors.blue.shade900]),
               ),
               child: ListTile(
                 contentPadding:
@@ -182,7 +182,7 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
                           ? TextButton(
                               child: Icon(
                                 Icons.assignment_turned_in_outlined,
-                                color: Colors.white,
+                                color: Colors.orange,
                                 size: 30,
                               ),
                               onPressed: () {
@@ -194,7 +194,7 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
                           : TextButton(
                               child: Icon(
                                 Icons.assignment_turned_in_rounded,
-                                color: Colors.white,
+                                color: Colors.orange,
                                 size: 30,
                               ),
                               onPressed: () {
@@ -205,7 +205,7 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
                               })
                       : Icon(
                           Icons.lightbulb_outline_rounded,
-                          color: Colors.white,
+                          color: Colors.orange,
                           size: 30,
                         ),
                 ),
@@ -230,7 +230,7 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
                           _asignments[index].filename != null
                               ? Text(
                                   "Rješenje: " +
-                                      _asignments[index].filename +
+                                      getName(_asignments[index].filename) +
                                       '\nVeličina: ' +
                                       _asignments[index].filesize +
                                       '\nTip datoteke: ' +
@@ -245,18 +245,28 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
                     ]),
                 trailing: TextButton(
                   child:
-                      Icon(Icons.upload_file, color: Colors.white, size: 30.0),
+                      Icon(Icons.upload_file, color: Colors.orange, size: 40.0),
                   onPressed: () {
                     //Ovdje cu otvoriti scanner
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ScannerPage(
-                            _currentPerson.id, index, _homework, _images)));
+                        builder: (context) => ScannerPage(_currentPerson.id,
+                            index + 1, _homework, _images, _courseId)));
                   },
                 ),
               ),
             ),
           );
         });
+  }
+
+  String getName(String name) {
+    String newName = "";
+    if (name.length > 10) {
+      newName +=
+          name.substring(0, 10) + "-" + "\n" + name.substring(10, name.length);
+    } else
+      newName = name;
+    return newName;
   }
 
   Future<void> _savefile(int asgn, int studentId, String fileName) async {
@@ -290,7 +300,14 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
           saveFile.writeAsBytes(response.data);
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => ViewerInfoPage(
-                  saveFile, directory.path + "/$fileName", fileName)));
+                  saveFile,
+                  directory.path + "/$fileName",
+                  fileName,
+                  false,
+                  _currentPerson.id,
+                  1,
+                  _homework,
+                  _courseId)));
         }
       }
     } catch (e) {

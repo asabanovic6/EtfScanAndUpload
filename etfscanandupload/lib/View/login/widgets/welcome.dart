@@ -16,14 +16,14 @@ class _TextLoginState extends State<TextLogin> {
         child: Column(
           children: <Widget>[
             Container(
-              height: 60,
+              height: 40,
             ),
             Center(
               child: Text(
-                'Dobro došli u oficijelnu aplikaciju',
+                'Elektrotehnički fakultet Univerziteta u Sarajevu',
                 style: TextStyle(
                     fontSize: 24,
-                    color: Colors.black,
+                    color: Color.fromARGB(255, 0, 76, 153),
                     fontWeight: FontWeight.bold),
               ),
             ),
@@ -32,7 +32,7 @@ class _TextLoginState extends State<TextLogin> {
               '© Amina Šabanović',
               style: TextStyle(
                 fontSize: 15,
-                color: Color.fromARGB(255, 0, 76, 153),
+                color: Colors.blueAccent.shade100,
               ),
             ),
           ],

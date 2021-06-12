@@ -9,19 +9,22 @@ import 'package:image_picker/image_picker.dart';
 class ScannerPage extends StatefulWidget {
   int _studentId;
   int _asgn;
-Homework _homework;
+  Homework _homework;
   List<File> _images;
+  int _courseId;
 
-  ScannerPage(int studentId, int asgn, Homework homework, List<File> images) {
+  ScannerPage(int studentId, int asgn, Homework homework, List<File> images,
+      int courseId) {
     _studentId = studentId;
     _asgn = asgn;
     _homework = homework;
     _images = images;
+    _courseId = courseId;
   }
 
   @override
   _ScannerState createState() =>
-      _ScannerState(_studentId, _asgn, _homework, _images);
+      _ScannerState(_studentId, _asgn, _homework, _images, _courseId);
 }
 
 class _ScannerState extends State<ScannerPage> {
@@ -32,12 +35,15 @@ class _ScannerState extends State<ScannerPage> {
   File scannedDocument;
   File _selectedFile;
   bool _inProcess = false;
+  int _courseId;
 
-  _ScannerState(int studentId, int asgn, Homework homework, List<File> images) {
+  _ScannerState(int studentId, int asgn, Homework homework, List<File> images,
+      int courseId) {
     _studentId = studentId;
     _asgn = asgn;
     _homework = homework;
     _images = images;
+    _courseId = courseId;
   }
 
   Widget getImageWidget() {
@@ -57,10 +63,10 @@ class _ScannerState extends State<ScannerPage> {
           compressQuality: 100,
           compressFormat: ImageCompressFormat.jpg,
           androidUiSettings: AndroidUiSettings(
-            toolbarColor: Colors.blue,
-            toolbarTitle: "RPS Cropper",
+            toolbarColor: Colors.blue.shade800,
+            toolbarTitle: "",
             toolbarWidgetColor: Colors.white,
-            statusBarColor: Colors.blue,
+            statusBarColor: Colors.blue.shade800,
             backgroundColor: Colors.white,
           ));
       this.setState(() {
@@ -69,7 +75,8 @@ class _ScannerState extends State<ScannerPage> {
       });
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) =>
-              ImageEditorPage(_studentId, _asgn, _homework, _images, cropped)));
+              ImageEditorPage(
+              _studentId, _asgn, _homework, _images, cropped, _courseId)));
     } else {
       this.setState(() {
         _inProcess = false;
@@ -82,6 +89,26 @@ class _ScannerState extends State<ScannerPage> {
     return Scaffold(
         body: Stack(
       children: <Widget>[
+        Container(
+          height: 100,
+          width: MediaQuery.of(context).size.width,
+          child: PreferredSize(
+            preferredSize: Size.fromHeight(100),
+            child: AppBar(
+              backgroundColor: Colors.blue.shade800,
+              toolbarHeight: 100,
+              title: Text("\n Učitaj rješenje "),
+              centerTitle: true,
+              elevation: 0,
+              leading: TextButton(
+                child: Icon(Icons.arrow_back_ios, color: Colors.white30),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ),
+        ),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -89,24 +116,56 @@ class _ScannerState extends State<ScannerPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                MaterialButton(
-                    color: Colors.blue,
-                    child: Text(
-                      "Camera",
-                      style: TextStyle(color: Colors.white),
+              SizedBox.fromSize(
+                  size: Size(90, 90), // button width and height
+                  child: ClipOval(
+                    child: Material(
+                      color: Colors.blue.shade700, // button color
+                      child: InkWell(
+                        splashColor: Colors.white30, // splash color
+                        onTap: () {
+                          getImage(ImageSource.camera);
+                        }, // button pressed
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(Icons.camera_alt_outlined,
+                                color: Colors.white30, size: 50), // icon
+                            Text("Camera",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white30)), // text
+                          ],
+                        ),
+                      ),
                     ),
-                    onPressed: () {
-                      getImage(ImageSource.camera);
-                    }),
-                MaterialButton(
-                    color: Colors.blue,
-                    child: Text(
-                      "Device",
-                      style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                SizedBox.fromSize(
+                  size: Size(90, 90), // button width and height
+                  child: ClipOval(
+                    child: Material(
+                      color: Colors.blue.shade700, // button color
+                      child: InkWell(
+                        splashColor: Colors.white30, // splash color
+                        onTap: () {
+                          getImage(ImageSource.gallery);
+                        }, // button pressed
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(Icons.folder_open_outlined,
+                                color: Colors.white30, size: 50), // icon
+                            Text("Device",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white30)), // text
+                          ],
+                        ),
+                      ),
                     ),
-                    onPressed: () {
-                      getImage(ImageSource.gallery);
-                    })
+                  ),
+                ),
               ],
             )
           ],
@@ -123,4 +182,6 @@ class _ScannerState extends State<ScannerPage> {
       ],
     ));
   }
+
+  
 }

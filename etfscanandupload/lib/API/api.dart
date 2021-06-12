@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
 import 'package:etfscanandupload/API/secureStorage.dart';
 import 'package:etfscanandupload/main.dart';
 
@@ -54,7 +57,19 @@ class Api {
     final $url = '/homework/$homeworkId/$asgn/student/$student';
     return client.get($url);
   }
+
+  static Future<Response<dynamic>> sendFile(
+      int studentId, int asgn, int homework, File file, String fileName) async {
+    final $url = '/homework/$homework/$asgn/student/$studentId';
+    FormData formData = new FormData.fromMap({
+      "homework": await MultipartFile.fromFile(file.path, filename: fileName),
+    });
+
+    return client.post($url, data: formData);
+  }
 }
+
+ 
 
 class AuthInterceptor extends Interceptor {
   static final String BEARER = 'Bearer ';
