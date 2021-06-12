@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'dart:math';
+import 'dart:core';
 import 'dart:typed_data';
 
 import 'package:etfscanandupload/Model/homework.dart';
@@ -67,11 +67,10 @@ class _ImageEditorState extends State<ImageEditorPage> {
     ByteData byteData =
         await boxImage.toByteData(format: ui.ImageByteFormat.png);
     var buffer = byteData.buffer;
-    Random random = new Random();
-    int randomNumber = random.nextInt(1000);
+    
     String fileName = _homework.homework.name +
         "_Image_" +
-        randomNumber.toString() +
+        DateTime.now().toString() +
         ".png";
 
     Directory directory;
