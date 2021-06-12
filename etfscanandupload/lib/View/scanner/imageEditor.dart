@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:etfscanandupload/Model/homework.dart';
 import 'package:etfscanandupload/View/scanner/creator.dart';
+import 'package:etfscanandupload/View/scanner/scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -127,6 +128,14 @@ class _ImageEditorState extends State<ImageEditorPage> {
       appBar: AppBar(
         title: Text(
           "\nDodaj filter" + '\n',
+        ),
+        leading: TextButton(
+          child: Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => ScannerPage(
+                    _studentId, _asgn, _homework, _images, _courseId)));
+          },
         ),
         backgroundColor: Colors.blue.shade800,
         toolbarHeight: 70,

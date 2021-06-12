@@ -3,6 +3,7 @@ import 'dart:core';
 import 'package:etfscanandupload/API/api.dart';
 import 'package:etfscanandupload/Model/homework.dart';
 import 'package:etfscanandupload/View/home/menu.dart';
+import 'package:etfscanandupload/View/homework/homeworksScreen.dart';
 import 'package:etfscanandupload/View/upload/uploadSolution.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_full_pdf_viewer/full_pdf_viewer_scaffold.dart';
@@ -81,7 +82,8 @@ class _ViewerInfoPageState extends State<ViewerInfoPage> {
           leading: TextButton(
             child: Icon(Icons.arrow_back_ios, color: Colors.white),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => HomeworksPage()));
             },
           ),
           actions: <Widget>[

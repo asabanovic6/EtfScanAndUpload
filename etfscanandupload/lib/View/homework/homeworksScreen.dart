@@ -40,7 +40,23 @@ class _HomeworksState extends State<HomeworksPage> {
     }
   }
 
- 
+  _isAlreadyLoggedIn() {
+    var formatedTime = _lastAcces.split(':');
+    int minutes = int.parse(formatedTime[1]);
+    int seconds = int.parse(formatedTime[2]);
+    formatedTime = formatedTime[0].split(' ');
+    int hours = int.parse(formatedTime[1]);
+    formatedTime = formatedTime[0].split('-');
+    int year = int.parse(formatedTime[0]);
+    int month = int.parse(formatedTime[1]);
+    int day = int.parse(formatedTime[2]);
+    var date1 = DateTime(year, month, day, hours, minutes, seconds);
+    var date2 = DateTime.now();
+    if (date2.difference(date1).inMinutes <= 5)
+      return true;
+    else
+      return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +64,68 @@ class _HomeworksState extends State<HomeworksPage> {
       body: SafeArea(
         child: Stack(
           children: [
+            /*
+            (_isAlreadyLoggedIn())
+                ? Column(
+                    children: [
+                      Container(
+                        height: 100,
+                        width: MediaQuery.of(context).size.width,
+                        child: PreferredSize(
+                          preferredSize: Size.fromHeight(100),
+                          child: AppBar(
+                            backgroundColor: Colors.blue.shade800,
+                            toolbarHeight: 100,
+                            title: RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(
+                                  text: _nameSurname,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: '\n' + _email,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: '\n' + '\nDošlo je do greške! ',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ]),
+                            ),
+                            centerTitle: true,
+                            elevation: 0,
+                            leading: TextButton(
+                              child: Icon(Icons.logout,
+                                  color: Colors.white, size: 40),
+                              onPressed: () async {
+                                await Credentials.deleteTokens();
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                    '/login', (Route<dynamic> route) => false);
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      getImageWidget(),
+                      Text(
+                        'Prijavljeni ste na više uređaja istovremeno!' +
+                            '\n' +
+                            'Možete biti prijavljeni na samo jednom uređaju!',
+                        style: TextStyle(
+                            color: Colors.orange,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  )
+                : */
             Column(
               children: [
                 Container(
@@ -103,7 +181,9 @@ class _HomeworksState extends State<HomeworksPage> {
       ),
     );
   }
-
+  Widget getImageWidget() {
+    return Icon(Icons.error_outline_outlined, color: Colors.red, size: 120);
+  }
   Future<void> _fetchActiveHomeworks() async {
     var response = await Api.getUpcomingHomeworks(_currentPerson.id);
     if (response.statusCode == 200) {
