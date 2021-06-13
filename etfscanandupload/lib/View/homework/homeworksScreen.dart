@@ -182,7 +182,7 @@ class _HomeworksState extends State<HomeworksPage> {
     );
   }
   Widget getImageWidget() {
-    return Icon(Icons.error_outline_outlined, color: Colors.red, size: 120);
+    return Icon(Icons.error_outline_outlined, color: Colors.white, size: 120);
   }
   Future<void> _fetchActiveHomeworks() async {
     var response = await Api.getUpcomingHomeworks(_currentPerson.id);
@@ -256,7 +256,7 @@ class _HomeworksState extends State<HomeworksPage> {
                             ]),
                         trailing: TextButton(
                           child: Icon(Icons.arrow_forward_ios,
-                              color: Colors.orange, size: 30.0),
+                              color: Colors.white, size: 30.0),
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => HomeworkInfoPage(

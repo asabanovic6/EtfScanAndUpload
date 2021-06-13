@@ -182,7 +182,7 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
                           ? TextButton(
                               child: Icon(
                                 Icons.assignment_turned_in_outlined,
-                                color: Colors.orange,
+                                color: Colors.white,
                                 size: 30,
                               ),
                               onPressed: () {
@@ -194,7 +194,7 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
                           : TextButton(
                               child: Icon(
                                 Icons.assignment_turned_in_rounded,
-                                color: Colors.orange,
+                                color: Colors.white,
                                 size: 30,
                               ),
                               onPressed: () {
@@ -205,7 +205,7 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
                               })
                       : Icon(
                           Icons.lightbulb_outline_rounded,
-                          color: Colors.orange,
+                          color: Colors.white,
                           size: 30,
                         ),
                 ),
@@ -245,7 +245,7 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
                     ]),
                 trailing: TextButton(
                   child:
-                      Icon(Icons.upload_file, color: Colors.orange, size: 40.0),
+                      Icon(Icons.upload_file, color: Colors.white, size: 40.0),
                   onPressed: () {
                     //Ovdje cu otvoriti scanner
                     Navigator.of(context).push(MaterialPageRoute(

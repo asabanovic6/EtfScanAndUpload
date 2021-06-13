@@ -132,18 +132,25 @@ class _CreatorState extends State<CreatorPage> {
                 ),
               ),
             ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.orange,
+      floatingActionButton: Container(
+        height: 100.0,
+        width: 100.0,
+        child: FittedBox(
+          child: FloatingActionButton(
+            backgroundColor: Colors.blue.shade800,
+            elevation: 50,
         child: Icon(
-          Icons.camera,
-          color: Colors.white24,
-          size: 50,
+          Icons.playlist_add_rounded,
+              color: Colors.white,
+              size: 55,
         ),
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => ScannerPage(
                   _studentId, _asgn, _homework, _images, _courseId)));
         },
+      ),
+        ),
       ),
     );
   }

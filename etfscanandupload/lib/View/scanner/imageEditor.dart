@@ -45,6 +45,7 @@ class _ImageEditorState extends State<ImageEditorPage> {
   int _courseId;
   GlobalKey _globalKey = GlobalKey();
   final List<List<double>> filters = [
+    GREY_MATRIX,
     GREYSCALE_MATRIX,
     SEPIA_MATRIX,
     VINTAGE_MATRIX,

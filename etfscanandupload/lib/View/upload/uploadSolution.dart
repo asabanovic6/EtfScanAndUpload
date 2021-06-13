@@ -101,7 +101,7 @@ class _SolutionPageState extends State<SolutionPage> {
                     : (Text(
                         'Došlo je do greške, zadatak nije poslan!' + '\n',
                         style: TextStyle(
-                            color: Colors.orange,
+                            color: Colors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.bold),
                       )),
@@ -128,11 +128,11 @@ class _SolutionPageState extends State<SolutionPage> {
                             padding: MaterialStateProperty.all<EdgeInsets>(
                                 EdgeInsets.all(15)),
                             foregroundColor:
-                                MaterialStateProperty.all<Color>(Colors.red),
+                                MaterialStateProperty.all<Color>(Colors.black),
                             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(18.0),
-                                    side: BorderSide(color: Colors.red)))),
+                                    side: BorderSide(color: Colors.black)))),
                         onPressed: () {
                           ImageCache().clear();
                           Navigator.pushReplacement(
@@ -148,8 +148,8 @@ class _SolutionPageState extends State<SolutionPage> {
                         style: ButtonStyle(
                             padding: MaterialStateProperty.all<EdgeInsets>(
                                 EdgeInsets.all(15)),
-                            foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0), side: BorderSide(color: Colors.red)))),
+                            foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0), side: BorderSide(color: Colors.black)))),
                         onPressed: () {
                           Navigator.pushReplacement(
                               context,
