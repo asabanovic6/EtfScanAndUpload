@@ -1,8 +1,6 @@
 import 'dart:convert';
 
-import 'package:etfscanandupload/API/api.dart';
 import 'package:etfscanandupload/Model/homework.dart';
-import 'package:etfscanandupload/View/home/menu.dart';
 import 'package:etfscanandupload/View/homework/homeworkPreview.dart';
 import 'package:etfscanandupload/View/homework/homeworksScreen.dart';
 import 'package:etfscanandupload/View/upload/uploadSolution.dart';

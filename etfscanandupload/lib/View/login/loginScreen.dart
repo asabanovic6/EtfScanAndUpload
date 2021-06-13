@@ -1,6 +1,5 @@
 import 'package:etfscanandupload/View/homework/homeworksScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:etfscanandupload/View/home/menu.dart';
 import 'package:etfscanandupload/View/login/widgets/button.dart';
 import 'package:etfscanandupload/View/login/widgets/email.dart';
 import 'package:etfscanandupload/View/login/widgets/password.dart';

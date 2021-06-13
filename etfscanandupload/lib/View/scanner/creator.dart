@@ -66,7 +66,7 @@ class _CreatorState extends State<CreatorPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Displaying Images"),
+        title: Text("Rješenja: "),
         backgroundColor: Colors.blue.shade800,
         toolbarHeight: 70,
         leading: TextButton(
