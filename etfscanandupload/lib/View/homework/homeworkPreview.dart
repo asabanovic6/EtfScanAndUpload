@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:etfscanandupload/API/api.dart';
 import 'package:etfscanandupload/Model/homework.dart';
+import 'package:etfscanandupload/Model/person.dart';
 import 'package:etfscanandupload/View/homework/homeworksScreen.dart';
 import 'package:etfscanandupload/View/upload/uploadSolution.dart';
 import 'package:flutter/material.dart';
@@ -51,6 +52,7 @@ class _ViewerInfoPageState extends State<ViewerInfoPage> {
   int id;
   int _courseId;
   bool _upload = false;
+  Person _currentPerson;
   _ViewerInfoPageState(
       File file,
       String path,
@@ -70,7 +72,22 @@ class _ViewerInfoPageState extends State<ViewerInfoPage> {
     _courseId = courseId;
     id = _homework.homework.id;
   }
+ @override
+  void initState() {
+    super.initState();
+   
+      _fetchPerson();
+  }
 
+  _fetchPerson() async {
+    var response = await Api.getPersonById(_studentId);
+    if (response.statusCode == 200) {
+      Person person = Person.fromJson(response.data);
+      setState(() {
+        _currentPerson = person;
+      });
+    }
+  }
   Widget build(BuildContext context) {
     return PDFViewerScaffold(
         //view PDF
@@ -81,8 +98,10 @@ class _ViewerInfoPageState extends State<ViewerInfoPage> {
           leading: TextButton(
             child: Icon(Icons.arrow_back_ios, color: Colors.white),
             onPressed: () {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => HomeworksPage()));
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => HomeworksPage(_currentPerson)));
             },
           ),
           actions: <Widget>[

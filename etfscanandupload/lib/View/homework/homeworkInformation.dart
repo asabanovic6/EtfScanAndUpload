@@ -19,18 +19,20 @@ class HomeworkInfoPage extends StatefulWidget {
   int _homeworkId;
   int _nrAssignments;
   Person _currentPerson;
+  bool _archive;
 
-  HomeworkInfoPage(
-      int homeworkId, int courseId, int nrAssignments, Person currentPerson) {
+  HomeworkInfoPage(int homeworkId, int courseId, int nrAssignments,
+      Person currentPerson, bool archive) {
     _courseId = courseId;
     _homeworkId = homeworkId;
     _nrAssignments = nrAssignments;
     _currentPerson = currentPerson;
+    _archive = archive;
   }
 
   @override
   _HomeworkInfoPageState createState() => _HomeworkInfoPageState(
-      _homeworkId, _courseId, _nrAssignments, _currentPerson);
+      _homeworkId, _courseId, _nrAssignments, _currentPerson, _archive);
 }
 
 class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
@@ -41,12 +43,14 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
   List<Homework> _asignments = [];
   Homework _homework;
   List<File> _images = [];
-  _HomeworkInfoPageState(
-      int homeworkId, int courseId, int nrAssignments, Person currentPerson) {
+  bool _archive;
+  _HomeworkInfoPageState(int homeworkId, int courseId, int nrAssignments,
+      Person currentPerson, bool archive) {
     _courseId = courseId;
     _homeworkId = homeworkId;
     _nrAssignments = nrAssignments;
     _currentPerson = currentPerson;
+    _archive = archive;
   }
 
   @override
@@ -243,7 +247,8 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
                         ],
                       )
                     ]),
-                trailing: TextButton(
+                trailing: (!_archive)
+                    ? TextButton(
                   child:
                       Icon(Icons.upload_file, color: Colors.white, size: 40.0),
                   onPressed: () {
@@ -252,7 +257,8 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
                         builder: (context) => ScannerPage(_currentPerson.id,
                             index + 1, _homework, _images, _courseId)));
                   },
-                ),
+                 )
+                    : Text(""),
               ),
             ),
           );

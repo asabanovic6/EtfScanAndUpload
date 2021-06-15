@@ -32,7 +32,13 @@ class Api {
     final $url = '/homework/latest/$student&resolve[]=CourseUnit';
     return client.get($url);
   }
-
+  static Future<Response<dynamic>> getDetailsOfCourse(
+      int courseId, int student, int year) {
+    final $url =
+        '/course/$courseId/student/$student&year=$year&score=true&resolve[]=CourseActivity&details=true&resolve[]=ZClass&resolve[]=CourseUnit&resolve[]=AcademicYear&totalScore=true&resolve[]=Homework';
+    return client.get($url);
+  }
+  
   static Future<Response<dynamic>> getCourse(int id) {
     final $url = '/course/$id';
     return client.get($url);
@@ -66,6 +72,12 @@ class Api {
     });
 
     return client.post($url, data: formData);
+  }
+  
+  static Future<Response<dynamic>> getMyStudy(int student) {
+    final $url =
+        '/course/student/$student&all=true&resolve[]=CourseOffering&resolve[]=CourseUnit';
+    return client.get($url);
   }
 }
 

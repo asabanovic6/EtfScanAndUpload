@@ -1,4 +1,5 @@
 import 'package:etfscanandupload/View/homework/homeworksScreen.dart';
+import 'package:etfscanandupload/View/menu/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:etfscanandupload/View/login/widgets/button.dart';
 import 'package:etfscanandupload/View/login/widgets/email.dart';
@@ -51,7 +52,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        children: [HomeworksPage()],
+        children: [MenuPage()],
       ),
     );
   }
@@ -70,7 +71,7 @@ Future<Widget> checkAPPCredentials() async {
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
       Api();
-      return HomePage();
+      return MenuPage();
     } else {
       return LoginPage();
     }

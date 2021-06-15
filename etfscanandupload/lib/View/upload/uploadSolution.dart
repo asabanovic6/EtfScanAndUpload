@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:etfscanandupload/API/api.dart';
 import 'package:etfscanandupload/Model/homework.dart';
+import 'package:etfscanandupload/Model/person.dart';
 import 'package:etfscanandupload/View/homework/homeworkPreview.dart';
 import 'package:etfscanandupload/View/homework/homeworksScreen.dart';
 import 'package:etfscanandupload/View/upload/uploadSolution.dart';
@@ -51,6 +53,7 @@ class _SolutionPageState extends State<SolutionPage> {
   int id;
   int _courseId;
   bool _uploaded;
+  Person _currentPerson;
   _SolutionPageState(File file, String path, String fileName, String fileSize,
       int studentId, int asgn, Homework homework, int courseId, bool uploaded) {
     _file = file;
@@ -64,7 +67,22 @@ class _SolutionPageState extends State<SolutionPage> {
     id = _homework.homework.id;
     _uploaded = uploaded;
   }
+@override
+  void initState() {
+    super.initState();
+   
+      _fetchPerson();
+  }
 
+  _fetchPerson() async {
+    var response = await Api.getPersonById(_studentId);
+    if (response.statusCode == 200) {
+      Person person = Person.fromJson(response.data);
+      setState(() {
+        _currentPerson = person;
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -138,7 +156,7 @@ class _SolutionPageState extends State<SolutionPage> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => HomeworksPage(),
+                                builder: (context) => HomeworksPage(_currentPerson),
                               ));
                         }))
                     : (TextButton(
