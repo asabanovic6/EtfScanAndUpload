@@ -48,6 +48,8 @@ dependencies:
   json_annotation: ^3.1.1
   pdf: ^2.1.0
   filesize: ^2.0.1
+  connectivity: ^3.0.6
+  overlay_dialog: ^0.2.0
   
 dependency_overrides:
   analyzer: ^0.41.1

@@ -47,7 +47,7 @@ class _ScannerState extends State<ScannerPage> {
   }
 
   Widget getImageWidget() {
-    return Icon(Icons.camera_alt_outlined, color: Colors.white70, size: 120);
+    return Icon(Icons.camera_alt_outlined, color: Colors.blueAccent.shade100, size: 120);
   }
 
   getImage(ImageSource source) async {

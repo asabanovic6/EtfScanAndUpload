@@ -9,11 +9,19 @@ import 'dart:core';
 
 class HomeworksPage extends StatefulWidget {
   Person _currentPerson;
-  HomeworksPage(Person currentPerson) {
+  bool _upload;
+  String _fileName;
+  String _fileSize;
+  HomeworksPage(
+      Person currentPerson, bool upload, String fileName, String fileSize) {
     _currentPerson = currentPerson;
+    _upload = upload;
+    _fileName = fileName;
+    _fileSize = fileSize;
   }
   @override
-  _HomeworksState createState() => _HomeworksState(_currentPerson);
+  _HomeworksState createState() =>
+      _HomeworksState(_currentPerson, _upload, _fileName, _fileSize);
 }
 
 class _HomeworksState extends State<HomeworksPage> {
@@ -22,11 +30,23 @@ class _HomeworksState extends State<HomeworksPage> {
   String _nameSurname = "";
   String _email = "";
   String _lastAcces = "";
-  _HomeworksState(Person currentPerson) {
+  bool _upload = true;
+  String _fileName;
+  String _fileSize;
+  _HomeworksState(
+      Person currentPerson, bool upload, String fileName, String fileSize) {
     _currentPerson = currentPerson;
+    _upload = upload;
+    _fileName = fileName;
+    _fileSize = fileSize;
   }
   @override
   void initState() {
+    if (!_upload) {
+      //Ovdje prikazati widget
+      WidgetsBinding.instance
+          .addPostFrameCallback((_) => showAlertDialogSuccess(context));
+    }
     super.initState();
     _fetchActiveHomeworks();
   }
@@ -48,7 +68,29 @@ class _HomeworksState extends State<HomeworksPage> {
     else
       return false;
   }
+  showAlertDialogSuccess(BuildContext context) {
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
 
+    AlertDialog alert = AlertDialog(
+      title: Text("Rješenje je poslano!"),
+      content: Text("Rješenje: $_fileName" + '\n' + "Veličina: $_fileSize"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

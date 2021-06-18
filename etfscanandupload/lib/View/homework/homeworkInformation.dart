@@ -213,7 +213,7 @@ class _HomeworkInfoPageState extends State<HomeworkInfoPage> {
                           size: 30,
                         ),
                 ),
-                title: Text(
+                title: Text( 
                   'Zadatak ' + (index + 1).toString(),
                   style: TextStyle(
                       color: Colors.white,

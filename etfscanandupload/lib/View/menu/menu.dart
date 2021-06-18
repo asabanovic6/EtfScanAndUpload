@@ -97,7 +97,8 @@ class _MenuState extends State<MenuPage> {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => HomeworksPage(_currentPerson),
+                          builder: (context) =>
+                              HomeworksPage(_currentPerson, true, null, null),
                         ));
                   }),
               Text(

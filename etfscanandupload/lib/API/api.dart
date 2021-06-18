@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -5,17 +6,46 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:etfscanandupload/API/secureStorage.dart';
 import 'package:etfscanandupload/main.dart';
+import 'package:connectivity/connectivity.dart';
 
 bool isFile = false;
 
 class Api {
   static Dio client;
+  Connectivity connectivity;
 
   Api() {
+    connectivity = new Connectivity();
     client = new Dio(BaseOptions(
       baseUrl: 'https://zamger.etf.unsa.ba/api_v6',
     ));
     client.interceptors.add(AuthInterceptor());
+  }
+  Future<Response> scheduleRequestRetry(RequestOptions requestOptions) async {
+    StreamSubscription streamSubscription;
+    var responseCompleter = Completer<Response>();
+
+    streamSubscription = connectivity.onConnectivityChanged.listen(
+      (connectivityResult) async {
+        if (connectivityResult != ConnectivityResult.none) {
+          streamSubscription.cancel();
+          // Complete the completer instead of returning
+          responseCompleter.complete(
+            client.request(
+              requestOptions.path,
+              cancelToken: requestOptions.cancelToken,
+              data: requestOptions.data,
+              onReceiveProgress: requestOptions.onReceiveProgress,
+              onSendProgress: requestOptions.onSendProgress,
+              queryParameters: requestOptions.queryParameters,
+              options: requestOptions,
+            ),
+          );
+        }
+      },
+    );
+
+    return responseCompleter.future;
   }
 
   static Future<Response<dynamic>> currentPerson() {
@@ -32,13 +62,14 @@ class Api {
     final $url = '/homework/latest/$student&resolve[]=CourseUnit';
     return client.get($url);
   }
+
   static Future<Response<dynamic>> getDetailsOfCourse(
       int courseId, int student, int year) {
     final $url =
         '/course/$courseId/student/$student&year=$year&score=true&resolve[]=CourseActivity&details=true&resolve[]=ZClass&resolve[]=CourseUnit&resolve[]=AcademicYear&totalScore=true&resolve[]=Homework';
     return client.get($url);
   }
-  
+
   static Future<Response<dynamic>> getCourse(int id) {
     final $url = '/course/$id';
     return client.get($url);
@@ -70,18 +101,16 @@ class Api {
     FormData formData = new FormData.fromMap({
       "homework": await MultipartFile.fromFile(file.path, filename: fileName),
     });
-
+    
     return client.post($url, data: formData);
   }
-  
+
   static Future<Response<dynamic>> getMyStudy(int student) {
     final $url =
         '/course/student/$student&all=true&resolve[]=CourseOffering&resolve[]=CourseUnit';
     return client.get($url);
   }
 }
-
- 
 
 class AuthInterceptor extends Interceptor {
   static final String BEARER = 'Bearer ';
@@ -118,9 +147,22 @@ class AuthInterceptor extends Interceptor {
       Api.client.unlock();
       return _retryWithToken(error.request);
       //ako je ponovni pokušaj opet pao, morat će se redirectati na LoginPage
+    } else if (_shouldRetry(error)) {
+      try {
+        Api api = new Api();
+        return api.scheduleRequestRetry(error.request);
+      } catch (e) {
+        return e;
+      }
     } else {
       return error;
     }
+  }
+
+  bool _shouldRetry(DioError err) {
+    return err.type == DioErrorType.DEFAULT &&
+        err.error != null &&
+        err.error is SocketException;
   }
 
   Future<Response> _retryWithToken(RequestOptions originalRequest) async {

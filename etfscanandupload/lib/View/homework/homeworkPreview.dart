@@ -4,13 +4,11 @@ import 'package:etfscanandupload/API/api.dart';
 import 'package:etfscanandupload/Model/homework.dart';
 import 'package:etfscanandupload/Model/person.dart';
 import 'package:etfscanandupload/View/homework/homeworksScreen.dart';
-import 'package:etfscanandupload/View/upload/uploadSolution.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_full_pdf_viewer/full_pdf_viewer_scaffold.dart';
 import 'dart:io';
 import 'package:filesize/filesize.dart';
 import 'dart:developer';
-
 import 'package:path_provider/path_provider.dart';
 
 class ViewerInfoPage extends StatefulWidget {
@@ -53,6 +51,7 @@ class _ViewerInfoPageState extends State<ViewerInfoPage> {
   int _courseId;
   bool _upload = false;
   Person _currentPerson;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   _ViewerInfoPageState(
       File file,
       String path,
@@ -72,11 +71,11 @@ class _ViewerInfoPageState extends State<ViewerInfoPage> {
     _courseId = courseId;
     id = _homework.homework.id;
   }
- @override
+  @override
   void initState() {
     super.initState();
-   
-      _fetchPerson();
+
+    _fetchPerson();
   }
 
   _fetchPerson() async {
@@ -88,8 +87,10 @@ class _ViewerInfoPageState extends State<ViewerInfoPage> {
       });
     }
   }
+
   Widget build(BuildContext context) {
     return PDFViewerScaffold(
+        key: _scaffoldKey,
         //view PDF
         appBar: AppBar(
           title: Text("Pregled rješenja"),
@@ -98,91 +99,16 @@ class _ViewerInfoPageState extends State<ViewerInfoPage> {
           leading: TextButton(
             child: Icon(Icons.arrow_back_ios, color: Colors.white),
             onPressed: () {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => HomeworksPage(_currentPerson)));
+              Navigator.pop(
+                  context);
             },
           ),
           actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.upload_file,
-                color: Colors.white,
-                size: 40,
-              ),
-              onPressed: () {
-                _sendFile();
-              },
-            )
+         
           ],
         ),
         path: _path);
   }
 
-  Future<void> _sendFile() async {
-    var response = await Api.sendFile(
-        _studentId, _asgn, _homework.homework.id, _file, _fileName);
-    if (response.statusCode == 201) {
-      _checkUpload();
-    } else {
-      _upload = false;
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => SolutionPage(_file, _path, _fileName, "0",
-                  _studentId, _asgn, _homework, _courseId, _upload)));
-    }
-  }
-
-  Future<void> _checkUpload() async {
-    var response = await Api.getHomework(
-        _homework.homework.id, _asgn, _courseId, _studentId);
-    if (response.statusCode == 200) {
-      setState(() {
-        Homework getHomework = Homework.fromJson(response.data);
-        if (getHomework.filename.length == _fileName.length &&
-            (int.parse(getFileSize(getHomework.filesize)) -
-                        int.parse(getFileSize(filesize(_file.lengthSync(), 0))))
-                    .abs() <=
-                1) {
-          //Ovdje je uspjelo
-          _upload = true;
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SolutionPage(
-                    _file,
-                    _path,
-                    _fileName,
-                    getHomework.filesize,
-                    _studentId,
-                    _asgn,
-                    _homework,
-                    _courseId,
-                    _upload),
-              ));
-        } else {
-          _upload = false;
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => SolutionPage(
-                      _file,
-                      _path,
-                      _fileName,
-                      getHomework.filesize,
-                      _studentId,
-                      _asgn,
-                      _homework,
-                      _courseId,
-                      _upload)));
-        }
-      });
-    }
-  }
-
-  String getFileSize(String size) {
-    return size.substring(0, size.length - 3);
-  }
+ 
 }

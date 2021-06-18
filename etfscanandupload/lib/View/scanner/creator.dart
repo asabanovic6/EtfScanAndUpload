@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 import 'package:etfscanandupload/View/homework/homeworkPreview.dart';
 import 'package:etfscanandupload/View/scanner/scanner.dart';
+import 'package:etfscanandupload/View/upload/uploadOrPreview.dart';
 import 'package:flutter/material.dart';
 
 import 'package:etfscanandupload/Model/homework.dart';
@@ -198,7 +199,8 @@ class _CreatorState extends State<CreatorPage> {
         File file = File(filePath.toString());
         await file.writeAsBytes(await pdf.save());
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ViewerInfoPage(file, filePath, fileName, true,
+            builder: (context) => UploadOrPreviewPage(file, filePath, fileName,
+                true,
                 _studentId, _asgn, _homework, _courseId)));
       }
     } catch (e) {

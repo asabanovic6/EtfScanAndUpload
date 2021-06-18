@@ -91,7 +91,7 @@ class _ArchivedEventsState extends State<ArchivedEventsPage> {
                     title: RichText(
                       textAlign: TextAlign.center,
                       text: TextSpan(
-                        text: '\nAktivni događaji: ',
+                        text: '\nArhivirani događaji: ',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
