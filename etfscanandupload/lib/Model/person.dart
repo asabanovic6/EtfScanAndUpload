@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'rss.dart';
+import 'extendedPerson.dart';
 
 part 'person.g.dart';
 
@@ -14,9 +15,9 @@ class Person {
   bool hasPhoto;
   String titlesPre;
   String titlesPost;
-  String email;
+  
   @JsonKey(name: 'ExtendedPerson')
-  var extendedPerson;
+  ExtendedPerson extendedPerson;
   @JsonKey(name: 'RSS')
   Rss rSS;
   String lastAccess;

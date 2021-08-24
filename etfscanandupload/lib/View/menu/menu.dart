@@ -30,10 +30,11 @@ class _MenuState extends State<MenuPage> {
     var response = await Api.currentPerson();
     if (response.statusCode == 200) {
       Person person = Person.fromJson(response.data);
-      setState(() {
-        _currentPerson = person;
+      _currentPerson = person;
         _nameSurname = person.name + " " + person.surname;
-        _email = person.email;
+       
+      setState(() {
+        
       });
     }
   }
@@ -59,14 +60,7 @@ class _MenuState extends State<MenuPage> {
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: '\n' + _email,
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ]),
+                     ),
                 ),
                 centerTitle: true,
                 elevation: 0,

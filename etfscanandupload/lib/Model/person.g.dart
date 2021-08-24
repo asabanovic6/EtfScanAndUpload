@@ -15,8 +15,10 @@ Person _$PersonFromJson(Map<String, dynamic> json) {
     ..hasPhoto = json['hasPhoto'] as bool
     ..titlesPre = json['titlesPre'] as String
     ..titlesPost = json['titlesPost'] as String
-    ..email = json['email'] as String
-    ..extendedPerson = json['ExtendedPerson']
+    ..extendedPerson = json['ExtendedPerson'] == null
+        ? null
+        : ExtendedPerson.fromJson(
+            json['ExtendedPerson'] as Map<String, dynamic>)
     ..rSS = json['RSS'] == null
         ? null
         : Rss.fromJson(json['RSS'] as Map<String, dynamic>)
@@ -31,7 +33,6 @@ Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
       'hasPhoto': instance.hasPhoto,
       'titlesPre': instance.titlesPre,
       'titlesPost': instance.titlesPost,
-      'email': instance.email,
       'ExtendedPerson': instance.extendedPerson,
       'RSS': instance.rSS,
       'lastAccess': instance.lastAccess,
