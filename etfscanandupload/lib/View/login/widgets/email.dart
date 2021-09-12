@@ -17,15 +17,15 @@ class _InputEmailState extends State<InputEmail> {
         child: TextField(
           controller: ButtonLoginState.usernameController,
           style: TextStyle(
-            color: Color.fromARGB(255, 0, 76, 153),
+            color: Colors.white,
           ),
           decoration: InputDecoration(
             border: InputBorder.none,
-            fillColor: Colors.indigo.shade900,
+            fillColor: Colors.white,
             labelText: 'Korisničko ime ili e-mail adresa :',
             labelStyle:
                 TextStyle(
-                color: Color.fromARGB(255, 0, 76, 153),
+                color: Colors.white,
                 fontWeight: FontWeight.bold),
           ),
         ),

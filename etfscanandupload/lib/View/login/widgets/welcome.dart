@@ -23,7 +23,7 @@ class _TextLoginState extends State<TextLogin> {
                 'Elektrotehnički fakultet Univerziteta u Sarajevu',
                 style: TextStyle(
                     fontSize: 24,
-                    color: Color.fromARGB(255, 0, 76, 153),
+                    color: Colors.white,
                     fontWeight: FontWeight.bold),
               ),
             ),
@@ -32,7 +32,7 @@ class _TextLoginState extends State<TextLogin> {
               '© Amina Šabanović',
               style: TextStyle(
                 fontSize: 15,
-                color: Colors.blueAccent.shade100,
+                color: Colors.white30,
               ),
             ),
           ],

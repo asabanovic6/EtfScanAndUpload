@@ -21,10 +21,10 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-            gradient: LinearGradient(
+              gradient: LinearGradient(
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
-              colors: [Colors.blueAccent.shade100, Colors.white30]), 
+                  colors: [Colors.blue.shade300, Colors.blue.shade900]),
         ),
         child: ListView(
           children: <Widget>[

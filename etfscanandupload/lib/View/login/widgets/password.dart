@@ -17,7 +17,7 @@ class _PasswordInputState extends State<PasswordInput> {
         child: TextField(
           controller: ButtonLoginState.passwordController,
           style: TextStyle(
-            color: Color.fromARGB(255, 0, 76, 153),
+            color: Colors.white,
           ),
           obscureText: true,
           decoration: InputDecoration(
@@ -25,7 +25,7 @@ class _PasswordInputState extends State<PasswordInput> {
             labelText: 'Lozinka :',
             labelStyle:
                 TextStyle(
-                color: Color.fromARGB(255, 0, 76, 153),
+                color: Colors.white,
                 fontWeight: FontWeight.bold),
           ),
         ),

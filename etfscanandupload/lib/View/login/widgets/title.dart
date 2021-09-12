@@ -16,7 +16,7 @@ class _TitleState extends State<Title> {
           child: Text(
             'Etf scan & upload',
             style: TextStyle(
-              color: Color.fromARGB(255, 0, 76, 153),
+              color: Colors.white,
               fontSize: 30,
               fontWeight: FontWeight.w900,
             ),

@@ -5,6 +5,7 @@ import 'package:etfscanandupload/Model/person.dart';
 import 'package:etfscanandupload/View/archive/courseUnits.dart';
 import 'package:etfscanandupload/View/homework/homeworksScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class MenuPage extends StatefulWidget {
   @override
@@ -44,51 +45,44 @@ class _MenuState extends State<MenuPage> {
     return Scaffold(
       body: Stack(
         children: <Widget>[
+          
           Container(
-            height: 110,
-            width: MediaQuery.of(context).size.width,
-            child: PreferredSize(
-              preferredSize: Size.fromHeight(100),
-              child: AppBar(
-                backgroundColor: Colors.blue.shade800,
-                toolbarHeight: 100,
-                title: RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                      text: _nameSurname,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                     ),
-                ),
-                centerTitle: true,
-                elevation: 0,
-              ),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [Colors.blue.shade300, Colors.blue.shade900]),
             ),
-          ),
-          Container(
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: <
                     Widget>[
               Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[]),
+                      Icon(
+                Icons.person_rounded,
+                color: Colors.white30,
+                size: 160,
+              ),
+              Text(
+                " ",
+              ),
               TextButton(
                   child: Text("Aktivni događaji",
                       style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   style: ButtonStyle(
                       padding: MaterialStateProperty.all<EdgeInsets>(
                           EdgeInsets.all(15)),
                       foregroundColor: MaterialStateProperty.all<Color>(
-                          Colors.blue.shade800),
+                          Colors.white),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18.0),
-                              side: BorderSide(color: Colors.blue.shade800)))),
+                              side: BorderSide(color: Colors.white)))),
+                    
                   onPressed: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
@@ -101,18 +95,18 @@ class _MenuState extends State<MenuPage> {
               TextButton(
                   child: Text("Arhivirani događaji",
                       style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   style: ButtonStyle(
                       padding: MaterialStateProperty.all<EdgeInsets>(
                           EdgeInsets.all(15)),
                       foregroundColor: MaterialStateProperty.all<Color>(
-                          Colors.blue.shade800),
+                          Colors.white),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18.0),
-                              side: BorderSide(color: Colors.blue.shade800)))),
+                              side: BorderSide(color: Colors.white)))),
                   onPressed: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => MyStudyPage(_currentPerson),
@@ -124,16 +118,16 @@ class _MenuState extends State<MenuPage> {
               TextButton(
                 child: Text("Odjavi se",
                     style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                 style: ButtonStyle(
                     padding: MaterialStateProperty.all<EdgeInsets>(
                         EdgeInsets.all(15)),
                     foregroundColor:
-                        MaterialStateProperty.all<Color>(Colors.blue.shade800),
+                        MaterialStateProperty.all<Color>(Colors.white),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(18.0),
-                            side: BorderSide(color: Colors.blue.shade800)))),
+                            side: BorderSide(color: Colors.white)))),
                 onPressed: () async {
                   await Credentials.deleteTokens();
                   Navigator.of(context).pushNamedAndRemoveUntil(
